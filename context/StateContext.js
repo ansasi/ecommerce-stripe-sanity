@@ -11,7 +11,7 @@ export const StateContext = ({ children }) => {
   const [qty, setQty] = useState(1);
 
   let foundProduct;
-  // let index;
+  let index;
 
   const onAdd = (product, quantity) => {
     const checkProductInCart = cartItems.find((item) => item._id === product._id);
@@ -31,21 +31,8 @@ export const StateContext = ({ children }) => {
       setCartItems(updatedCartItems);
     } else {
       product.quantity = quantity;
-      // Sort the items to avoid them moving in the cart
-      const sortedItems = [...cartItems, { ...product }];
-      sortedItems.sort((a, b) => {
-        const nameA = a.name.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.name.toUpperCase(); // ignore upper and lowercase
-        if (nameA < nameB) {
-          return -1;
-        }
-        if (nameA > nameB) {
-          return 1;
-        }
-        // names must be equal
-        return 0;
-      });
-      setCartItems(sortedItems);
+
+      setCartItems([...cartItems, { ...product }]);
     }
 
     toast.success(`${qty} ${product.name} added to the cart.`);
@@ -62,50 +49,24 @@ export const StateContext = ({ children }) => {
 
   const toggleCartItemQuantity = (id, value) => {
     foundProduct = cartItems.find((item) => item._id === id);
-    // index = cartItems.findIndex((product) => product._id === id);
+    index = cartItems.findIndex((product) => product._id === id);
     const newCartItems = cartItems.filter((item) => item._id !== id);
 
     if (value === "inc") {
-      // Sort the items to avoid them moving in the cart
-      const sortedItems = [
-        ...newCartItems,
+      setCartItems([
+        ...newCartItems.slice(0, index),
         { ...foundProduct, quantity: foundProduct.quantity + 1 },
-      ];
-      sortedItems.sort((a, b) => {
-        const nameA = a.name.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.name.toUpperCase(); // ignore upper and lowercase
-        if (nameA < nameB) {
-          return -1;
-        }
-        if (nameA > nameB) {
-          return 1;
-        }
-        // names must be equal
-        return 0;
-      });
-      setCartItems(sortedItems);
+        ...newCartItems.slice(index),
+      ]);
       setTotalPrice((prevTotalPrice) => prevTotalPrice + foundProduct.price);
       setTotalQuantities((prevTotalQuantities) => prevTotalQuantities + 1);
     } else if (value === "dec") {
       if (foundProduct.quantity > 1) {
-        // Sort the items to avoid them moving in the cart
-        const sortedItems = [
-          ...newCartItems,
+        setCartItems([
+          ...newCartItems.slice(0, index),
           { ...foundProduct, quantity: foundProduct.quantity - 1 },
-        ];
-        sortedItems.sort((a, b) => {
-          const nameA = a.name.toUpperCase(); // ignore upper and lowercase
-          const nameB = b.name.toUpperCase(); // ignore upper and lowercase
-          if (nameA < nameB) {
-            return -1;
-          }
-          if (nameA > nameB) {
-            return 1;
-          }
-          // names must be equal
-          return 0;
-        });
-        setCartItems(sortedItems);
+          ...newCartItems.slice(index),
+        ]);
         setTotalPrice((prevTotalPrice) => prevTotalPrice - foundProduct.price);
         setTotalQuantities((prevTotalQuantities) => prevTotalQuantities - 1);
       }
@@ -136,7 +97,7 @@ export const StateContext = ({ children }) => {
         incQty,
         decQty,
         onAdd,
-        toggleCartItemQuanitity: toggleCartItemQuantity,
+        toggleCartItemQuantity: toggleCartItemQuantity,
         onRemove,
         setCartItems,
         setTotalPrice,
