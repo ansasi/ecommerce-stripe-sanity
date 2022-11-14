@@ -133,7 +133,7 @@ span.text-red {
   background-color: #dcdcdc;
   border-radius: 15px;
   position: relative;
-  height: 500px;
+  height: fit-content;
   line-height: 0.9;
   width: 100%;
 }
@@ -146,13 +146,12 @@ span.text-red {
   background-color: #f02d34;
   color: white;
   border: none;
-  margin-top: 40px;
-  font-size: 18px;
+  margin-top: 70px;
+  font-size: 25px;
   font-weight: 500;
   cursor: pointer;
   z-index: 10000 !important;
 }
-
 .hero-banner-container h3 {
   font-size: 4rem;
   margin-top: 4px;
@@ -164,12 +163,12 @@ span.text-red {
   text-transform: uppercase;
 }
 .hero-banner-image {
-  /* object-fit: contain; */
+  object-fit: contain;
   position: absolute;
   top: 0%;
   right: 20%;
-  width: 450px;
-  height: 450px;
+  width: 500px;
+  height: 500px;
 }
 
 .desc {
@@ -208,15 +207,16 @@ span.text-red {
   font-weight: 200;
 }
 .footer-banner-container {
-  padding: 100px 40px;
+  padding: 40px 10px;
   background-color: #f02d34;
   border-radius: 15px;
   position: relative;
-  height: 400px;
+  height: fit-content;
+  min-height: 400px;
   line-height: 1;
   color: white;
   width: 100%;
-  margin-top: 120px;
+  margin-top: 100px;
 }
 .banner-desc {
   display: flex;
@@ -233,24 +233,31 @@ span.text-red {
   font-weight: 500;
   cursor: pointer;
 }
+.banner-desc .left {
+  max-width: 350px;
+}
 .banner-desc .left h3 {
   font-weight: 900;
   font-size: 80px;
-  margin-left: 25px;
+  margin-left: 20px;
 }
 .banner-desc .left p {
   margin: 18px;
 }
 .footer-banner-image {
+  object-fit: contain;
   position: absolute;
   pointer-events: none;
-  /* top: -35%;
-  left: 8%; */
-  top: -25%;
-  left: 25%;
+  width: 450px;
+  height: 450px;
+  top: -5%;
+  left: 35%;
 }
 .banner-desc .right {
   line-height: 1.4;
+  text-align: right;
+  margin-right: 20px;
+  max-width: 450px;
 }
 .banner-desc .right h3 {
   font-weight: 800;
@@ -417,7 +424,6 @@ span.text-red {
 .product-detail-image {
   border-radius: 15px;
   background-color: #ebebeb;
-
   width: 400px;
   height: 400px;
   cursor: pointer;
@@ -544,7 +550,7 @@ span.text-red {
   margin: 50px;
   color: #324d67;
 
-  font-size: 28px;
+  font-size: 30px;
 }
 .maylike-products-container {
   display: flex;
@@ -624,75 +630,196 @@ span.text-red {
 .product-max-qty {
   margin-top: 10px;
 }
-
-@media screen and (max-width: 800px) {
-  .hero-banner-container {
-    height: 560px;
-  }
+@media screen and (max-width: 1024px) {
   .hero-banner-image {
-    /* object-fit: contain; */
-    width: 77%;
-    height: 62%;
-    top: -2%;
-    right: -6%;
+    object-fit: contain;
+    position: absolute;
+    top: 0%;
+    right: 0%;
+    width: 450px;
+    height: 450px;
   }
   .footer-banner-container {
+    height: fit-content;
+    min-height: 400px;
+    /* padding: 40px 10px; */
+  }
+  .footer-banner-image {
+    object-fit: contain;
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    top: -5%;
+    left: 25%;
+  }
+  .banner-desc .left {
+    max-width: 300px;
+  }
+  .banner-desc .left h3 {
+    font-size: 80px;
+    margin-left: 20px;
+  }
+  .banner-desc .right {
+    line-height: 1.3;
+    max-width: 300px;
+  }
+  .product-detail-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .product-detail-image {
+    width: 500px;
+    height: 500px;
+  }
+  .small-images-container {
+    gap: 25px;
+    margin-top: 30px;
+  }
+  .small-image {
+    width: 90px;
+    height: 90px;
+    cursor: pointer;
+  }
+  .reviews {
+    font-size: 26px;
+  }
+  .product-detail-desc h4 {
+    font-size: 28px;
+    margin-top: 10px;
+  }
+  .product-detail-desc p {
+    font-size: 26px;
+    margin-top: 10px;
+  }
+  .product-detail-desc .price {
+    font-weight: 700;
+    font-size: 32px;
+    margin-top: 30px;
+  }
+  .product-detail-desc .quantity {
+    font-size: 22px;
+    margin-top: 15px;
+  }
+  .buttons .add-to-cart {
+    margin-top: 40px;
+    font-size: 30px;
+    width: 240px;
+  }
+  .buttons .buy-now {
+    width: 240px;
+    margin-top: 40px;
+    font-size: 30px;
+  }
+  .quantity-desc span {
+    font-size: 30px;
+    padding: 6px 18px;
+  }
+  .quantity-desc .num {
+    font-size: 35px;
+  }
+  .success,
+  .cancel {
+    width: 650px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .hero-banner-container {
+    line-height: 1.3;
     height: 560px;
+    padding: 20px 20px;
+    text-align: center;
+  }
+  .hero-banner-container h3 {
+    font-size: 40px;
+    margin-top: 4px;
+  }
+  .hero-banner-container h1 {
+    font-size: 50px;
+    margin-left: 0px;
+  }
+  .hero-banner-container button {
+    padding: 10px 16px;
+    margin-top: 310px;
+    z-index: 10000;
+  }
+  .hero-banner-image {
+    object-fit: contain;
+    width: 330px;
+    height: 330px;
+    top: 28%;
+    right: 5%;
+  }
+  .desc {
+    visibility: hidden;
+    bottom: 50px;
+  }
+
+  .footer-banner-container {
+    height: fit-content;
+    min-height: 550px;
+    line-height: 1.2;
     margin-top: 80px;
+    padding: 20px 20px;
+    text-align: center;
   }
   .footer-banner-image {
     pointer-events: none;
-    width: 77%;
-    left: 30%;
-    top: 6%;
-    height: 56%;
+    object-fit: contain;
+    width: 330px;
+    height: 330px;
+    top: 30%;
+    left: 5%;
   }
-  .banner-desc .left h3 {
-    font-weight: 900;
-    font-size: 50px;
-    margin-left: 5px;
+  .banner-desc {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+  }
+  .banner-desc .left h2 {
+    font-weight: 700;
+    font-size: 40px;
   }
   .banner-desc .left p {
-    margin: 18px;
+    font-size: 18px;
+    margin: 8px;
+  }
+  .banner-desc .right {
+    line-height: 1.4;
+    margin-top: 280px;
+    max-width: 450px;
+    text-align: center;
   }
   .banner-desc .right h3 {
     font-size: 45px;
   }
-  .banner-desc .right p {
-    font-size: 18px;
-  }
   .banner-desc .right .company-desc {
     font-size: 14px;
   }
-  .banner-desc {
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-  .hero-banner-container {
-    line-height: 1.3;
-  }
-  .hero-banner-container h1 {
-    font-size: 50px;
-  }
-  .hero-banner-container h3 {
-    font-size: 40px;
-  }
-  .hero-banner-container button {
-    margin-top: 90px;
-    z-index: 10000;
-  }
-  .desc {
-    bottom: 60px;
+  .banner-desc button {
+    margin-top: 20px;
   }
   .product-detail-container {
     flex-wrap: wrap;
+    margin: 20px;
   }
   .product-detail-container .product-detail-image {
-    width: 350px;
-    height: 350px;
+    width: 300px;
+    height: 300px;
+  }
+  .small-images-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .cart-wrapper {
+    width: 100%;
   }
   .cart-container {
-    width: 415px;
+    width: 100%;
     padding: 4px;
   }
   .cart-heading {
@@ -700,24 +827,15 @@ span.text-red {
   }
   .product-container {
     margin-top: 10px;
+    max-height: 100%;
   }
   .product {
     padding: 20px 5px;
   }
   .product .cart-product-image {
-    width: 25%;
-    height: 25%;
+    width: 35%;
+    height: 35%;
   }
-  .buttons .add-to-cart {
-    width: 150px;
-  }
-  .buttons .buy-now {
-    width: 150px;
-  }
-  .product-detail-container {
-    margin: 20px;
-  }
-
   .item-desc .flex {
     width: 200px;
   }
@@ -726,23 +844,39 @@ span.text-red {
     gap: 10px;
   }
   .item-desc .bottom {
-    margin-top: 30px;
+    margin-top: 20px;
   }
   .flex h5 {
-    font-size: 16px;
-    color: #324d67;
+    font-size: 22px;
   }
   .flex h4 {
-    font-size: 16px;
-    color: black;
+    font-size: 20px;
+  }
+  .total h3 {
+    font-size: 22px;
+  }
+  .remove-item {
+    font-size: 26px;
+  }
+  .quantity-desc span {
+    font-size: 20px;
+    padding: 4px 8px;
+  }
+  .quantity-desc .num {
+    font-size: 25px;
+  }
+  .buttons .add-to-cart {
+    font-size: 24px;
+    width: 150px;
+  }
+  .buttons .buy-now {
+    font-size: 24px;
+    width: 150px;
   }
   .cart-bottom {
     padding: 30px;
   }
 
-  .total h3 {
-    font-size: 20px;
-  }
   .track {
     animation: marquee 10s linear infinite;
     width: 550%;
@@ -753,7 +887,7 @@ span.text-red {
   }
   .success,
   .cancel {
-    width: 370px;
+    width: 300px;
     margin-top: 100px;
     padding: 20px;
   }
