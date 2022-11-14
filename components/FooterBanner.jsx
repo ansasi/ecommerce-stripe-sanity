@@ -11,7 +11,7 @@ const FooterBanner = ({ footerBanner }) => {
     // This executes in client side
     setWindowSize(window.innerWidth);
     console.log("window", window.innerWidth);
-  }, []);
+  });
 
   return (
     <div className="footer-banner-container">
