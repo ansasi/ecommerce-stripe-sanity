@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 
 import { useStateContext } from "../context/StateContext";
 import { urlFor } from "../lib/client";
-import getStripe from "../lib/getStripe";
 
 const Cart = () => {
   const cartRef = useRef();
@@ -15,28 +14,38 @@ const Cart = () => {
     totalQuantities,
     cartItems,
     setShowCart,
-    toggleCartItemQuantity: toggleCartItemQuantity,
+    toggleCartItemQuantity,
     onRemove,
   } = useStateContext();
 
   const handleCheckout = async () => {
-    const stripe = await getStripe();
+    try {
+      const response = await fetch("/api/stripe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(cartItems),
+      });
 
-    const response = await fetch("/api/stripe", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(cartItems),
-    });
+      if (!response.ok) {
+        toast.error("Something went wrong with checkout");
+        return;
+      }
 
-    if (response.statusCode === 500) return;
+      const data = await response.json();
 
-    const data = await response.json();
+      if (!data.url) {
+        toast.error("Unable to start checkout");
+        return;
+      }
 
-    toast.loading("Redirecting...");
-
-    stripe.redirectToCheckout({ sessionId: data.id });
+      toast.loading("Redirecting...");
+      window.location.assign(data.url);
+    } catch (err) {
+      console.error(err);
+      toast.error("Unable to reach checkout");
+    }
   };
 
   return (
@@ -52,10 +61,8 @@ const Cart = () => {
           <div className="empty-cart">
             <AiOutlineShopping size={150} />
             <h3>Your shopping bag is empty</h3>
-            <Link href="/">
-              <button type="button" onClick={() => setShowCart(false)} className="btn">
-                Continue Shopping
-              </button>
+            <Link href="/" onClick={() => setShowCart(false)} className="btn">
+              Continue Shopping
             </Link>
           </div>
         )}
@@ -64,7 +71,11 @@ const Cart = () => {
           {cartItems.length >= 1 &&
             cartItems.map((item) => (
               <div className="product" key={item._id}>
-                <img src={urlFor(item?.image[0])} alt={item.name} className="cart-product-image" />
+                <img
+                  src={urlFor(item?.image[0]).url()}
+                  alt={item.name}
+                  className="cart-product-image"
+                />
                 <div className="item-desc">
                   <div className="flex top">
                     <h5>{item.name}</h5>
@@ -86,7 +97,11 @@ const Cart = () => {
                         </span>
                       </p>
                     </div>
-                    <button type="button" className="remove-item" onClick={() => onRemove(item)}>
+                    <button
+                      type="button"
+                      className="remove-item"
+                      aria-label={`Remove ${item.name}`}
+                      onClick={() => onRemove(item)}>
                       <TiDeleteOutline />
                     </button>
                   </div>
@@ -99,7 +114,6 @@ const Cart = () => {
           <div className="cart-bottom">
             <div className="total">
               <h3>Subtotal:</h3>
-              {/* Sometimes JS create random decimals, we fix it here */}
               <h3>${(Math.round(totalPrice * 100) / 100).toFixed(2)}</h3>
             </div>
             <div className="btn-container">

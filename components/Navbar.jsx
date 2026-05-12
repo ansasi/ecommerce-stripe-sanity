@@ -14,7 +14,11 @@ const Navbar = () => {
         <Link href="/">Ansasi Headphones</Link>
       </p>
 
-      <button type="button" className="cart-icon" onClick={() => setShowCart(true)}>
+      <button
+        type="button"
+        className="cart-icon"
+        aria-label="Open cart"
+        onClick={() => setShowCart(true)}>
         <AiOutlineShopping />
         <span className="cart-item-qty">{totalQuantities}</span>
       </button>
