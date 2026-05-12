@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { AiOutlineMinus, AiOutlinePlus, AiFillStar, AiOutlineStar } from "react-icons/ai";
 
-import { client, urlFor } from "../../lib/client";
+import { client, hasSanityConfig, urlFor } from "../../lib/client";
 import { Product } from "../../components";
 import { useStateContext } from "../../context/StateContext";
 
@@ -17,7 +17,6 @@ const ProductDetails = ({ product, products }) => {
 
   const handleBuyNow = () => {
     onAdd(product, qty);
-
     setShowCart(true);
   };
 
@@ -26,13 +25,20 @@ const ProductDetails = ({ product, products }) => {
       <div className="product-detail-container">
         <div>
           <div className="image-container">
-            <img src={urlFor(image && image[index])} className="product-detail-image" />
+            {image?.[index] && (
+              <img
+                src={urlFor(image[index]).url()}
+                alt={name}
+                className="product-detail-image"
+              />
+            )}
           </div>
           <div className="small-images-container">
             {image?.map((item, i) => (
               <img
                 key={i}
-                src={urlFor(item)}
+                src={urlFor(item).url()}
+                alt={`${name} thumbnail ${i + 1}`}
                 className={i === index ? "small-image selected-image" : "small-image"}
                 onMouseEnter={() => setIndex(i)}
               />
@@ -93,12 +99,15 @@ const ProductDetails = ({ product, products }) => {
 };
 
 export const getStaticPaths = async () => {
+  if (!hasSanityConfig) {
+    return { paths: [], fallback: "blocking" };
+  }
+
   const query = `*[_type == "product"] {
     slug {
       current
     }
-  }
-  `;
+  }`;
 
   const products = await client.fetch(query);
 
@@ -115,13 +124,19 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps = async ({ params: { slug } }) => {
-  const query = `*[_type == "product" && slug.current == '${slug}'][0]`;
+  if (!hasSanityConfig) {
+    return { notFound: true };
+  }
+
+  const query = `*[_type == "product" && slug.current == $slug][0]`;
   const productsQuery = '*[_type == "product"]';
 
-  const product = await client.fetch(query);
+  const product = await client.fetch(query, { slug });
   const products = await client.fetch(productsQuery);
 
-  // console.log(product);
+  if (!product) {
+    return { notFound: true };
+  }
 
   return {
     props: { products, product },

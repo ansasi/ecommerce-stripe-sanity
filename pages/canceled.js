@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { VscError } from "react-icons/vsc";
 
@@ -12,7 +12,7 @@ const Canceled = () => {
     setCartItems([]);
     setTotalPrice(0);
     setTotalQuantities(0);
-  }, []);
+  }, [setCartItems, setTotalPrice, setTotalQuantities]);
 
   return (
     <div className="cancel-wrapper">
@@ -27,10 +27,8 @@ const Canceled = () => {
             support@ansasi.com
           </a>
         </p>
-        <Link href="/">
-          <button type="button" width="300px" className="btn">
-            Continue Shopping
-          </button>
+        <Link href="/" className="btn">
+          Continue Shopping
         </Link>
       </div>
     </div>

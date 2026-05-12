@@ -5,21 +5,24 @@ import Link from "next/link";
 import { urlFor } from "../lib/client";
 
 const FooterBanner = ({ footerBanner }) => {
-  const [windowSize, setWindowSize] = useState(0);
+  const [isWide, setIsWide] = useState(false);
 
   useEffect(() => {
-    // This executes in client side
-    setWindowSize(window.innerWidth);
-    console.log("window", window.innerWidth);
-  });
+    const update = () => setIsWide(window.innerWidth > 768);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  if (!footerBanner) return null;
 
   return (
     <div className="footer-banner-container">
       <div className="banner-desc">
         <div className="left">
           <p>{footerBanner.discount}</p>
-          {windowSize > 768 && <h3>{footerBanner.largeText1}</h3>}
-          {windowSize > 768 ? (
+          {isWide && <h3>{footerBanner.largeText1}</h3>}
+          {isWide ? (
             <h3>{footerBanner.largeText2}</h3>
           ) : (
             <h2>{footerBanner.smallText}</h2>
@@ -27,15 +30,21 @@ const FooterBanner = ({ footerBanner }) => {
           <p>{footerBanner.saleTime}</p>
         </div>
         <div className="right">
-          {windowSize > 768 && <p>{footerBanner.smallText}</p>}
+          {isWide && <p>{footerBanner.smallText}</p>}
           <h3>{footerBanner.midText}</h3>
-          {windowSize > 768 && <p>{footerBanner.description}</p>}
+          {isWide && <p>{footerBanner.description}</p>}
           <Link href={`/product/${footerBanner.product}`}>
             <button type="button">{footerBanner.buttonText}</button>
           </Link>
         </div>
 
-        <img src={urlFor(footerBanner.image)} className="footer-banner-image" />
+        {footerBanner.image && (
+          <img
+            src={urlFor(footerBanner.image).url()}
+            alt={footerBanner.midText ?? "Banner"}
+            className="footer-banner-image"
+          />
+        )}
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { BsBagCheckFill } from "react-icons/bs";
 
@@ -14,7 +14,7 @@ const Success = () => {
     setTotalPrice(0);
     setTotalQuantities(0);
     runFireworks();
-  }, []);
+  }, [setCartItems, setTotalPrice, setTotalQuantities]);
 
   return (
     <div className="success-wrapper">
@@ -30,10 +30,8 @@ const Success = () => {
             support@ansasi.com
           </a>
         </p>
-        <Link href="/">
-          <button type="button" width="300px" className="btn">
-            Continue Shopping
-          </button>
+        <Link href="/" className="btn">
+          Continue Shopping
         </Link>
       </div>
     </div>
