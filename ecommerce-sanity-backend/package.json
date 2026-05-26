@@ -4,7 +4,7 @@
   "version": "2.0.0",
   "description": "Sanity Studio for the Ansasi Headphones e-commerce",
   "main": "package.json",
-  "author": "Ángel Sánchez <ansasi1998@gmail.com>",
+  "author": "\u00c1ngel S\u00e1nchez <ansasi1998@gmail.com>",
   "license": "UNLICENSED",
   "scripts": {
     "dev": "sanity dev",
@@ -27,5 +27,6 @@
     "@sanity/eslint-config-studio": "^6.0.0",
     "eslint": "^9.39.1",
     "prop-types": "^15.8.1"
-  }
+  },
+  "packageManager": "pnpm@10.28.1"
 }
